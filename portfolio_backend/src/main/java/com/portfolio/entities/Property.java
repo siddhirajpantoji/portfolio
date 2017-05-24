@@ -8,6 +8,8 @@ import javax.persistence.Id;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.portfolio.util.PropertyType;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -28,8 +30,15 @@ public class Property extends AuditParams  {
 	@Column( unique = true)
 	private String name;
 	
+	private String value;
+	
 	private Boolean status;
-
+	
+	@NotEmpty
+	private PropertyType type;
+	
+	@NotEmpty
+	private String key;
 	public Property( String name, Boolean status) {
 		this.name = name;
 		this.status = status;
