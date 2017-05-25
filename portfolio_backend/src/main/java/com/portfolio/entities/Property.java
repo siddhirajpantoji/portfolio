@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -31,16 +32,18 @@ public class Property extends AuditParams  {
 	private String name;
 	
 	private String value;
-	
-	private Boolean status;
-	
+
 	@NotEmpty
 	private PropertyType type;
-	
-	@NotEmpty
-	private String key;
-	public Property( String name, Boolean status) {
+
+	@OneToOne( optional = false)
+	private PropertyKey key;
+
+	public Property( String name, String value, PropertyType type, PropertyKey key) {
 		this.name = name;
-		this.status = status;
+		this.value = value;
+		this.type = type;
+		this.key = key;
 	}
+	
 }

@@ -29,11 +29,12 @@ public class AuditParams {
 	@JsonFormat (timezone = Constants.TIME_ZONE, shape = Shape.STRING, pattern= Constants.DATE_TIME_FORMAT )
 	protected Date modifiedTs;
 	
-	public AuditParams(Date createdTs, Date modifiedTs) {
-		this.createdTs = createdTs;
-		this.modifiedTs = modifiedTs;
-	}
-
+	
+	/*
+	 * If the property is Active or not 
+	 */
+	private Boolean status;
+	
 	@PrePersist
 	void onCreate()
 	{
@@ -45,5 +46,4 @@ public class AuditParams {
 	{
 		this.setModifiedTs(new Date());
 	}
-	
 }

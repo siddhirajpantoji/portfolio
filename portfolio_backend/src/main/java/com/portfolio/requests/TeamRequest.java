@@ -3,6 +3,8 @@ package com.portfolio.requests;
 
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.portfolio.util.ValidationMessages;
 
 import lombok.Data;
@@ -20,6 +22,14 @@ public class TeamRequest extends BaseRequest {
 	//@NotBlank (message = ValidationMessages.TEAM_NAME_NOT_EMPTY)
 	private String name;
 	
-	private Boolean status;
+	private String value;
+
+	@NotEmpty
+	private Integer propertyType;
+
+	
+	// Will Change to property type 
+	private String key;
+
 	
 }

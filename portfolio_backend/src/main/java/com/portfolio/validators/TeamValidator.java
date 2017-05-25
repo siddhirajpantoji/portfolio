@@ -23,7 +23,7 @@ public class TeamValidator {
 	 */
 	public Property getTeamFromRequest( TeamRequest teamRequest)
 	{
-			return new Property(teamRequest.getName(), teamRequest.getStatus());
+			return null;
 	}
 	/**
 	 * To Validate the Player Information 
