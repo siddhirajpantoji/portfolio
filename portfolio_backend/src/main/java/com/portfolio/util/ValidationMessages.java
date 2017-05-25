@@ -4,10 +4,6 @@ public class ValidationMessages {
 
 	public static final String CANT_BE_EMPTY= " Cannot be Empty ";
 	public static final String DOES_NOT_EXIST = " Does not exists ";
-	public static final String PLAYER = "Player ";
-	public static final String PLAYER_ID_NOT_EMPTY = PLAYER+"Id"+CANT_BE_EMPTY;
-	public static final String PLAYER_DOES_NOT_EXIST  = PLAYER+DOES_NOT_EXIST;
-	public static final String PLAYER_NAME_NOT_EMPTY = PLAYER+"Name"+CANT_BE_EMPTY;
 	
 	public static final String PROPERTY = "Property ";
 	
@@ -15,8 +11,16 @@ public class ValidationMessages {
 	public static final String TEAM_DOES_NOT_EXIST  = PROPERTY+DOES_NOT_EXIST;
 	public static final String TEAM_NAME_NOT_EMPTY = PROPERTY+"Name"+CANT_BE_EMPTY;
 	
-	public static final String BATTING_NO_OF_RUNS = "Batting No of Runs ";
-	public static final String BATTING_NO_OF_RUNS_ID_NOT_EMPTY = BATTING_NO_OF_RUNS+"Id"+CANT_BE_EMPTY;
-	public static final String BATTING_NO_OF_RUNS_DOES_NOT_EXIST  = BATTING_NO_OF_RUNS+DOES_NOT_EXIST;
+	public static final String PROPERTY_TYPE = "Property Type";
+	public static final String PROPERTY_TYPE_NOT_EXIST  = PROPERTY_TYPE+DOES_NOT_EXIST;
+	public static final String PROPERTY_TYPE_NOT_EMPTY = PROPERTY_TYPE+CANT_BE_EMPTY;
 	
+	public static final String PROPERTY_KEY = "Property KEY";
+	public static final String PROPERTY_KEY_NOT_EXIST  = PROPERTY_KEY+DOES_NOT_EXIST;
+	public static final String PROPERTY_KEY_NOT_EMPTY = PROPERTY_KEY+CANT_BE_EMPTY;
+	
+
+	public static final String PROPERTY_VALUE = "Property Value";
+	public static final String PROPERTY_VALUE_NOT_EXIST  = PROPERTY_VALUE+DOES_NOT_EXIST;
+	public static final String PROPERTY_VALUE_NOT_EMPTY = PROPERTY_VALUE+CANT_BE_EMPTY;
 }

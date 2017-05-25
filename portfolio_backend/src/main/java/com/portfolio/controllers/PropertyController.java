@@ -21,13 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.portfolio.entities.Property;
 import com.portfolio.repositories.PropertyRepository;
-import com.portfolio.requests.TeamRequest;
+import com.portfolio.requests.PropertyRequest;
 import com.portfolio.response.TeamResponse;
 import com.portfolio.util.Messages;
 import com.portfolio.util.RestEndpointConstants;
 import com.portfolio.util.ValidationMessages;
 import com.portfolio.validatedObjects.ValidatedTeam;
-import com.portfolio.validators.TeamValidator;
+import com.portfolio.validators.PropertyValidator;
 
 @RestController
 public class PropertyController {
@@ -36,7 +36,7 @@ public class PropertyController {
 	private	PropertyRepository propertyRepository;
 	
 	@Autowired
-	private TeamValidator teamValidator;
+	private PropertyValidator teamValidator;
 	
 	@RequestMapping ( method= RequestMethod.GET, value= RestEndpointConstants.PROPERTYS_END_POINT)
 	public @ResponseBody ResponseEntity<TeamResponse> getTeamInfo(@PathVariable @NotBlank(message =ValidationMessages.PLAYER_ID_NOT_EMPTY) Long Id)
@@ -46,7 +46,7 @@ public class PropertyController {
 	
 	@Transactional(  rollbackOn= Exception.class )
 	@RequestMapping ( method= RequestMethod.POST, value= RestEndpointConstants.PROPERTY_BASE_VAR)
-	public @ResponseBody ResponseEntity<TeamResponse> createPlayerInfo(@RequestBody @Valid TeamRequest TeamResponse)
+	public @ResponseBody ResponseEntity<TeamResponse> createPlayerInfo(@RequestBody @Valid PropertyRequest TeamResponse)
 	{
 		Property team = propertyRepository.save(teamValidator.getTeamFromRequest(TeamResponse));
 		return new ResponseEntity<TeamResponse>(new TeamResponse(HttpStatus.OK, Messages.EVERYTHING_OK, team), HttpStatus.OK);
@@ -55,7 +55,7 @@ public class PropertyController {
 	
 	@Transactional(  rollbackOn= Exception.class )
 	@RequestMapping ( method= {RequestMethod.PUT, RequestMethod.PATCH }, value= RestEndpointConstants.PROPERTYS_END_POINT)
-	public @ResponseBody ResponseEntity<TeamResponse> updatePlayerInfo( @PathVariable @NotBlank(message =ValidationMessages.TEAM_ID_NOT_EMPTY) Long Id,  @Valid @RequestBody TeamRequest teamRequest)
+	public @ResponseBody ResponseEntity<TeamResponse> updatePlayerInfo( @PathVariable @NotBlank(message =ValidationMessages.TEAM_ID_NOT_EMPTY) Long Id,  @Valid @RequestBody PropertyRequest teamRequest)
 	{
 		ResponseEntity<TeamResponse> responseEntity = getValidatedResponse(Id);
 

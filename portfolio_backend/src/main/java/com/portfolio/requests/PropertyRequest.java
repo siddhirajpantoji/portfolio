@@ -1,8 +1,7 @@
 package com.portfolio.requests;
 
 
-import javax.validation.constraints.NotNull;
-
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.portfolio.util.ValidationMessages;
@@ -16,19 +15,17 @@ import lombok.ToString;
 @ToString( callSuper = false)
 @EqualsAndHashCode( callSuper = false )
 @NoArgsConstructor
-public class TeamRequest extends BaseRequest {
-	
-	@NotNull ( message = ValidationMessages.TEAM_NAME_NOT_EMPTY )
-	//@NotBlank (message = ValidationMessages.TEAM_NAME_NOT_EMPTY)
+public class PropertyRequest extends BaseRequest {
+
+	@NotBlank (message = ValidationMessages.TEAM_NAME_NOT_EMPTY)
 	private String name;
 	
 	private String value;
 
-	@NotEmpty
+	@NotBlank( message = ValidationMessages.PROPERTY_TYPE_NOT_EMPTY)
 	private Integer propertyType;
-
-	
-	// Will Change to property type 
+	// Will Change to property key Object
+	@NotBlank( message = ValidationMessages.PROPERTY_KEY_NOT_EMPTY)
 	private String key;
 
 	
