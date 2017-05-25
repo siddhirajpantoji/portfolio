@@ -9,7 +9,7 @@ import com.portfolio.repositories.PropertyKeyRepository;
 import com.portfolio.repositories.PropertyRepository;
 import com.portfolio.requests.PropertyRequest;
 import com.portfolio.util.ValidationMessages;
-import com.portfolio.validatedObjects.ValidatedTeam;
+import com.portfolio.validatedObjects.ValidatedProperty;
 
 @Component
 public class PropertyValidator {
@@ -25,25 +25,27 @@ public class PropertyValidator {
 	 * @param playerId
 	 * @return
 	 */
-	public Property getTeamFromRequest( PropertyRequest teamRequest)
+	public ValidatedProperty getTeamFromRequest( PropertyRequest teamRequest)
 	{
 		PropertyKey  key = propertyKeyRepository.findByName(teamRequest.getName());
+		if( null == key)
 			return null;
+		return null;
 	}
 	/**
 	 * To Validate the Player Information 
 	 * @param teamId
 	 * @return
 	 */
-	public ValidatedTeam getTeamFromId ( Long teamId)
+	public ValidatedProperty getTeamFromId ( Long teamId)
 	{
 		if( null == teamId )
-			return new ValidatedTeam(true, ValidationMessages.TEAM_ID_NOT_EMPTY);
+			return new ValidatedProperty(true, ValidationMessages.TEAM_ID_NOT_EMPTY);
 		Property team = teamRepository.findOne(teamId);
 		if( null == team )
 		{
-			return new ValidatedTeam(true, ValidationMessages.TEAM_DOES_NOT_EXIST);
+			return new ValidatedProperty(true, ValidationMessages.TEAM_DOES_NOT_EXIST);
 		}
-		return new ValidatedTeam(team);
+		return new ValidatedProperty(team);
 	}
 }

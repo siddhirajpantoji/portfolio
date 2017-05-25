@@ -9,14 +9,14 @@ import lombok.ToString;
 @Data
 @ToString( callSuper = false)
 @EqualsAndHashCode( callSuper = false )
-public class ValidatedTeam   extends BaseValidEntity {
+public class ValidatedProperty   extends BaseValidEntity {
 
 	private Property property;
-	public ValidatedTeam(Boolean isErrorPresent, String message) {
+	public ValidatedProperty(Boolean isErrorPresent, String message) {
 		super(isErrorPresent, message);
 	}
 
-	public ValidatedTeam(Property team) {
+	public ValidatedProperty(Property team) {
 		super(false, "");
 		this.property = team;
 	}

@@ -26,7 +26,7 @@ import com.portfolio.response.TeamResponse;
 import com.portfolio.util.Messages;
 import com.portfolio.util.RestEndpointConstants;
 import com.portfolio.util.ValidationMessages;
-import com.portfolio.validatedObjects.ValidatedTeam;
+import com.portfolio.validatedObjects.ValidatedProperty;
 import com.portfolio.validators.PropertyValidator;
 
 @RestController
@@ -86,7 +86,7 @@ public class PropertyController {
 
 	public ResponseEntity<TeamResponse> getValidatedResponse(Long teamId)
 	{
-		ValidatedTeam validatedTeam = teamValidator.getTeamFromId(teamId);
+		ValidatedProperty validatedTeam = teamValidator.getTeamFromId(teamId);
 		if( validatedTeam.getIsErrorPresent() ){
 			return new ResponseEntity<TeamResponse>(new TeamResponse(HttpStatus.BAD_REQUEST, validatedTeam.getMessage()), HttpStatus.BAD_REQUEST);
 		}
