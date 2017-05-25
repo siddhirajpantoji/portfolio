@@ -17,7 +17,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class PropertyRequest extends BaseRequest {
 
-	@NotBlank (message = ValidationMessages.TEAM_NAME_NOT_EMPTY)
+	@NotBlank (message = ValidationMessages.PROPERTY_NAME_NOT_EMPTY)
 	private String name;
 	
 	private String value;

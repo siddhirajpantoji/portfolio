@@ -7,9 +7,9 @@ public class ValidationMessages {
 	
 	public static final String PROPERTY = "Property ";
 	
-	public static final String TEAM_ID_NOT_EMPTY = PROPERTY+"Id"+CANT_BE_EMPTY;
-	public static final String TEAM_DOES_NOT_EXIST  = PROPERTY+DOES_NOT_EXIST;
-	public static final String TEAM_NAME_NOT_EMPTY = PROPERTY+"Name"+CANT_BE_EMPTY;
+	public static final String PROPERTY_ID_NOT_EMPTY = PROPERTY+"Id"+CANT_BE_EMPTY;
+	public static final String PROPERTY_DOES_NOT_EXIST  = PROPERTY+DOES_NOT_EXIST;
+	public static final String PROPERTY_NAME_NOT_EMPTY = PROPERTY+"Name"+CANT_BE_EMPTY;
 	
 	public static final String PROPERTY_TYPE = "Property Type";
 	public static final String PROPERTY_TYPE_NOT_EXIST  = PROPERTY_TYPE+DOES_NOT_EXIST;
