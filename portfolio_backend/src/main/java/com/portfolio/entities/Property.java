@@ -36,6 +36,7 @@ public class Property extends AuditParams  {
 	@NotEmpty
 	private PropertyType type;
 
+	
 	@OneToOne( optional = false)
 	private PropertyKey key;
 

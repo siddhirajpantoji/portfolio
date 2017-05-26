@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.portfolio.entities.Property;
+import com.portfolio.entities.PropertyKey;
+import com.portfolio.repositories.PropertyKeyRepository;
 import com.portfolio.repositories.PropertyRepository;
 import com.portfolio.requests.PropertyRequest;
-import com.portfolio.response.TeamResponse;
+import com.portfolio.response.PropertyResponse;
 import com.portfolio.util.Messages;
 import com.portfolio.util.RestEndpointConstants;
 import com.portfolio.util.ValidationMessages;
@@ -37,32 +39,35 @@ public class PropertyController {
 	
 	@Autowired
 	private PropertyValidator teamValidator;
+
+	@Autowired
+	private PropertyKeyRepository propertyKeyRepository;
 	
 	@RequestMapping ( method= RequestMethod.GET, value= RestEndpointConstants.PROPERTYS_END_POINT)
-	public @ResponseBody ResponseEntity<TeamResponse> getTeamInfo(@PathVariable @NotBlank(message =ValidationMessages.PROPERTY_ID_NOT_EMPTY) Long Id)
+	public @ResponseBody ResponseEntity<PropertyResponse> getTeamInfo(@PathVariable @NotBlank(message =ValidationMessages.PROPERTY_ID_NOT_EMPTY) Long Id)
 	{
 		return getValidatedResponse(Id);
 	}
 	
 	@Transactional(  rollbackOn= Exception.class )
 	@RequestMapping ( method= RequestMethod.POST, value= RestEndpointConstants.PROPERTY_BASE_VAR)
-	public @ResponseBody ResponseEntity<TeamResponse> createPlayerInfo(@RequestBody @Valid PropertyRequest propertyRequest)
+	public @ResponseBody ResponseEntity<PropertyResponse> createPlayerInfo(@RequestBody @Valid PropertyRequest propertyRequest)
 	{
 		ValidatedProperty validatedProperty  = teamValidator.getTeamFromRequest(propertyRequest);
 		if( validatedProperty.getIsErrorPresent() )
 		{
-			return new ResponseEntity<TeamResponse>(new TeamResponse(HttpStatus.BAD_REQUEST, validatedProperty.getMessage()), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<PropertyResponse>(new PropertyResponse(HttpStatus.BAD_REQUEST, validatedProperty.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 		Property team = propertyRepository.save(validatedProperty.getProperty());
-		return new ResponseEntity<TeamResponse>(new TeamResponse(HttpStatus.OK, Messages.EVERYTHING_OK, team), HttpStatus.OK);
+		return new ResponseEntity<PropertyResponse>(new PropertyResponse(team), HttpStatus.OK);
 	}
 	
 	
 	@Transactional(  rollbackOn= Exception.class )
 	@RequestMapping ( method= {RequestMethod.PUT, RequestMethod.PATCH }, value= RestEndpointConstants.PROPERTYS_END_POINT)
-	public @ResponseBody ResponseEntity<TeamResponse> updatePlayerInfo( @PathVariable @NotBlank(message =ValidationMessages.PROPERTY_ID_NOT_EMPTY) Long Id,  @Valid @RequestBody PropertyRequest teamRequest)
+	public @ResponseBody ResponseEntity<PropertyResponse> updatePlayerInfo( @PathVariable @NotBlank(message =ValidationMessages.PROPERTY_ID_NOT_EMPTY) Long Id,  @Valid @RequestBody PropertyRequest teamRequest)
 	{
-		ResponseEntity<TeamResponse> responseEntity = getValidatedResponse(Id);
+		ResponseEntity<PropertyResponse> responseEntity = getValidatedResponse(Id);
 
 		if(! HttpStatus.OK.equals(responseEntity.getStatusCode()))
 		{
@@ -73,19 +78,19 @@ public class PropertyController {
 		ValidatedProperty newProp = teamValidator.getTeamFromRequest(teamRequest);
 		if(newProp.getIsErrorPresent())
 		{
-				return new ResponseEntity<TeamResponse>(new TeamResponse(HttpStatus.BAD_REQUEST,newProp.getMessage()), HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<PropertyResponse>(new PropertyResponse(HttpStatus.BAD_REQUEST,newProp.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 		
 		BeanUtils.copyProperties(newProp.getProperty(), team);
 		team = propertyRepository.save(team);
-		return new ResponseEntity<TeamResponse>(new TeamResponse(HttpStatus.OK, Messages.EVERYTHING_OK, team), HttpStatus.OK);
+		return new ResponseEntity<PropertyResponse>(new PropertyResponse(team), HttpStatus.OK);
 	}
 	
 	@Transactional(  rollbackOn= Exception.class )
 	@RequestMapping ( method= { RequestMethod.DELETE }, value= RestEndpointConstants.PROPERTYS_END_POINT )
-	public @ResponseBody ResponseEntity<TeamResponse> deleteTeamInfo(@PathVariable @NotBlank(message =ValidationMessages.PROPERTY_ID_NOT_EMPTY) Long Id)
+	public @ResponseBody ResponseEntity<PropertyResponse> deleteTeamInfo(@PathVariable @NotBlank(message =ValidationMessages.PROPERTY_ID_NOT_EMPTY) Long Id)
 	{
-		ResponseEntity<TeamResponse> responseEntity = getValidatedResponse(Id);
+		ResponseEntity<PropertyResponse> responseEntity = getValidatedResponse(Id);
 		if(! HttpStatus.OK.equals(responseEntity.getStatusCode()))
 		{
 			return responseEntity;
@@ -93,16 +98,16 @@ public class PropertyController {
 		Property team = responseEntity.getBody().getProperty();
 		team.setStatus(false);
 		propertyRepository.save(team);
-		return new ResponseEntity<TeamResponse>(new TeamResponse(HttpStatus.OK, Messages.EVERYTHING_OK, team), HttpStatus.OK);
+		return new ResponseEntity<PropertyResponse>(new PropertyResponse(team), HttpStatus.OK);
 	}
 
-	public ResponseEntity<TeamResponse> getValidatedResponse(Long teamId)
+	public ResponseEntity<PropertyResponse> getValidatedResponse(Long teamId)
 	{
 		ValidatedProperty validatedTeam = teamValidator.getTeamFromId(teamId);
 		if( validatedTeam.getIsErrorPresent() ){
-			return new ResponseEntity<TeamResponse>(new TeamResponse(HttpStatus.BAD_REQUEST, validatedTeam.getMessage()), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<PropertyResponse>(new PropertyResponse(HttpStatus.BAD_REQUEST, validatedTeam.getMessage()), HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<TeamResponse>(new TeamResponse(HttpStatus.OK, Messages.EVERYTHING_OK, validatedTeam.getProperty()), HttpStatus.OK);
+		return new ResponseEntity<PropertyResponse>(new PropertyResponse(validatedTeam.getProperty()), HttpStatus.OK);
 	}
 	
 	@RequestMapping ( method= RequestMethod.GET, value= RestEndpointConstants.PROPERTY_BASE_VAR)
@@ -112,14 +117,15 @@ public class PropertyController {
 	}
 	
 	@RequestMapping ( method= RequestMethod.GET, value= RestEndpointConstants.PROPERTY_GET_ALL)
-	public @ResponseBody ResponseEntity<List<Property>> getTeamInfo()
+	public @ResponseBody ResponseEntity<PropertyResponse> getTeamInfo()
 	{
-		return new ResponseEntity<List<Property>>(propertyRepository.findAll(), HttpStatus.OK);
+		return new ResponseEntity<PropertyResponse>(new PropertyResponse(propertyRepository.findAll()), HttpStatus.OK);
 	}
 	
 	@RequestMapping ( method= RequestMethod.GET, value= RestEndpointConstants.PROPERTY_KEY_SEARCH)
 	public @ResponseBody ResponseEntity<List<Property>> searchAllByKey(@PathVariable @NotBlank(message =ValidationMessages.PROPERTY_KEY_NOT_EMPTY) String key )
 	{
+		PropertyKey propkey = propertyKeyRepository.findByName(key);	
 		return new ResponseEntity<List<Property>>(propertyRepository.findAll(), HttpStatus.OK); 
 	}
 }
