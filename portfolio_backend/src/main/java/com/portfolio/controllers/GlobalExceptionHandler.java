@@ -77,7 +77,7 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<BaseResponse> handleException ( MissingPathVariableException exception)
 	{
 		logger.error("MissingPathVariableException OCcured ", exception);
-		return new ResponseEntity<BaseResponse>(new BaseResponse(HttpStatus.BAD_REQUEST, Messages.INVALID_REQUEST), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<BaseResponse>(new BaseResponse(HttpStatus.BAD_REQUEST, "Variable Missing from path ::"+ exception.getVariableName() ), HttpStatus.BAD_REQUEST);
 	}
 	// ConstraintViolationException
 

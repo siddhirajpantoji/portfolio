@@ -1,7 +1,5 @@
 package com.portfolio.controllers;
 
-import java.util.List;
-
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -25,7 +23,6 @@ import com.portfolio.repositories.PropertyKeyRepository;
 import com.portfolio.repositories.PropertyRepository;
 import com.portfolio.requests.PropertyRequest;
 import com.portfolio.response.PropertyResponse;
-import com.portfolio.util.Messages;
 import com.portfolio.util.RestEndpointConstants;
 import com.portfolio.util.ValidationMessages;
 import com.portfolio.validatedObjects.ValidatedProperty;
@@ -123,9 +120,13 @@ public class PropertyController {
 	}
 	
 	@RequestMapping ( method= RequestMethod.GET, value= RestEndpointConstants.PROPERTY_KEY_SEARCH)
-	public @ResponseBody ResponseEntity<List<Property>> searchAllByKey(@PathVariable @NotBlank(message =ValidationMessages.PROPERTY_KEY_NOT_EMPTY) String key )
-	{
-		PropertyKey propkey = propertyKeyRepository.findByName(key);	
-		return new ResponseEntity<List<Property>>(propertyRepository.findAll(), HttpStatus.OK); 
+	public @ResponseBody ResponseEntity<PropertyResponse> searchAllByKey(@PathVariable @NotBlank(message =ValidationMessages.PROPERTY_KEY_NOT_EMPTY) String keyName )
+	{		
+		PropertyKey propkey = propertyKeyRepository.findByName(keyName);
+		if( null == propkey )
+		{
+			return new ResponseEntity<PropertyResponse>(new PropertyResponse(HttpStatus.BAD_REQUEST, ValidationMessages.PROPERTY_KEY_NOT_EXIST), HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<PropertyResponse>(new PropertyResponse(propertyRepository.findAllByKey(propkey.getId())), HttpStatus.OK);
 	}
 }
