@@ -6,6 +6,8 @@ import javax.validation.Valid;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,16 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.portfolio.entities.Property;
 import com.portfolio.entities.PropertyKey;
 import com.portfolio.repositories.PropertyKeyRepository;
 import com.portfolio.requests.PropertyKeyRequest;
-import com.portfolio.requests.PropertyRequest;
 import com.portfolio.response.PropertyKeyResponse;
-import com.portfolio.response.PropertyResponse;
 import com.portfolio.util.RestEndpointConstants;
 import com.portfolio.util.ValidationMessages;
-import com.portfolio.validatedObjects.ValidatedProperty;
 import com.portfolio.validatedObjects.ValidatedPropertyKey;
 import com.portfolio.validators.PropertyKeyValidator;
 
@@ -80,5 +78,32 @@ public class PropertyKeyController {
 		BeanUtils.copyProperties(newPropkey.getKey(), key);
 		key = propertyKeyRepo.save(key);
 		return new ResponseEntity<PropertyKeyResponse>(new PropertyKeyResponse(key), HttpStatus.OK);
+	}
+	
+	@Transactional(  rollbackOn= Exception.class )
+	@RequestMapping ( method= { RequestMethod.DELETE }, value= RestEndpointConstants.PROPERTY_KEY_END_POINT )
+	public @ResponseBody ResponseEntity<PropertyKeyResponse> deleteTeamInfo(@PathVariable @NotBlank(message =ValidationMessages.PROPERTY_KEY_ID_NOT_EMPTY) Long Id)
+	{
+		ValidatedPropertyKey propertyKey = validator.getPropertyFromId(Id);
+		if( propertyKey.getIsErrorPresent() )
+		{
+			return new ResponseEntity<PropertyKeyResponse>(new PropertyKeyResponse(HttpStatus.BAD_REQUEST,propertyKey.getMessage()), HttpStatus.BAD_REQUEST);
+		}
+		PropertyKey key = propertyKey.getKey();
+		key.setStatus(false);
+		propertyKeyRepo.save(key);
+		return new ResponseEntity<PropertyKeyResponse>(new PropertyKeyResponse(key), HttpStatus.OK);
+	}
+
+	@RequestMapping ( method= RequestMethod.GET, value= RestEndpointConstants.PROPERTY_KEY_BASE_VAR)
+	public @ResponseBody Page<PropertyKey> getPlayerInfo( Pageable pageable)
+	{
+		return propertyKeyRepo.findAll(pageable); 
+	}
+	
+	@RequestMapping ( method= RequestMethod.GET, value= RestEndpointConstants.PROPERTY_KEY_GET_ALL)
+	public @ResponseBody ResponseEntity<PropertyKeyResponse> getPropertyKeyInfo()
+	{
+		return new ResponseEntity<PropertyKeyResponse>(new PropertyKeyResponse(propertyKeyRepo.findAll()), HttpStatus.OK);
 	}
 }
