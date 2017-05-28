@@ -35,7 +35,7 @@ public class PropertyController {
 	private	PropertyRepository propertyRepository;
 	
 	@Autowired
-	private PropertyValidator teamValidator;
+	private PropertyValidator propertyValidator;
 
 	@Autowired
 	private PropertyKeyRepository propertyKeyRepository;
@@ -50,7 +50,7 @@ public class PropertyController {
 	@RequestMapping ( method= RequestMethod.POST, value= RestEndpointConstants.PROPERTY_BASE_VAR)
 	public @ResponseBody ResponseEntity<PropertyResponse> createPlayerInfo(@RequestBody @Valid PropertyRequest propertyRequest)
 	{
-		ValidatedProperty validatedProperty  = teamValidator.getTeamFromRequest(propertyRequest);
+		ValidatedProperty validatedProperty  = propertyValidator.getTeamFromRequest(propertyRequest);
 		if( validatedProperty.getIsErrorPresent() )
 		{
 			return new ResponseEntity<PropertyResponse>(new PropertyResponse(HttpStatus.BAD_REQUEST, validatedProperty.getMessage()), HttpStatus.BAD_REQUEST);
@@ -72,7 +72,7 @@ public class PropertyController {
 		}
 
 		Property team = responseEntity.getBody().getProperty();
-		ValidatedProperty newProp = teamValidator.getTeamFromRequest(teamRequest);
+		ValidatedProperty newProp = propertyValidator.getTeamFromRequest(teamRequest);
 		if(newProp.getIsErrorPresent())
 		{
 				return new ResponseEntity<PropertyResponse>(new PropertyResponse(HttpStatus.BAD_REQUEST,newProp.getMessage()), HttpStatus.BAD_REQUEST);
@@ -100,7 +100,7 @@ public class PropertyController {
 
 	public ResponseEntity<PropertyResponse> getValidatedResponse(Long teamId)
 	{
-		ValidatedProperty validatedTeam = teamValidator.getTeamFromId(teamId);
+		ValidatedProperty validatedTeam = propertyValidator.getTeamFromId(teamId);
 		if( validatedTeam.getIsErrorPresent() ){
 			return new ResponseEntity<PropertyResponse>(new PropertyResponse(HttpStatus.BAD_REQUEST, validatedTeam.getMessage()), HttpStatus.BAD_REQUEST);
 		}

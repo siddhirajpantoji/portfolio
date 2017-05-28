@@ -2,7 +2,6 @@ package com.portfolio.requests;
 
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import com.portfolio.util.ValidationMessages;
 
@@ -26,7 +25,5 @@ public class PropertyRequest extends BaseRequest {
 	private Integer propertyType;
 	// Will Change to property key Object
 	@NotBlank( message = ValidationMessages.PROPERTY_KEY_NOT_EMPTY)
-	private String key;
-
-	
+	private String key;	
 }

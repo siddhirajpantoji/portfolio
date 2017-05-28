@@ -27,4 +27,8 @@ public class PropertyKey extends AuditParams {
 	@NotEmpty
 	@Column( unique = true)
 	private String name;
+
+	public PropertyKey(String name) {
+		this.name = name;
+	}	
 }

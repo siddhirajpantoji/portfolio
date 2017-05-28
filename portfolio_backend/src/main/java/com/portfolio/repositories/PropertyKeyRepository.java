@@ -8,7 +8,9 @@ import com.portfolio.entities.PropertyKey;
 
 public interface PropertyKeyRepository extends JpaRepository<PropertyKey, Long> {
 
-	
 	@Query( nativeQuery = true, value = "Select * From property_key where status = 1 and name=:name")
 	PropertyKey findByName(@Param("name") String name);
+	
+	@Query( nativeQuery = true, value = "Select * From property_key where status = 1 and id=:id")
+	PropertyKey findOne(@Param("id") Long id);
 }

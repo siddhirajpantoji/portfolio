@@ -7,4 +7,10 @@ public class RestEndpointConstants {
 	public static final String PROPERTY_GET_ALL = PROPERTY_BASE_VAR + "-all";
 	
 	public static final String PROPERTY_KEY_SEARCH = PROPERTY_BASE_VAR +" /search/{keyName}";
+	
+	
+	public static final String PROPERTY_KEY_BASE_VAR = "/propertyKey";
+	public static final String PROPERTY_KEY_END_POINT = PROPERTY_KEY_BASE_VAR+"/{Id}";
+	public static final String PROPERTY_KEY_GET_ALL = PROPERTY_KEY_BASE_VAR + "-all";
+	
 }
